@@ -1,5 +1,5 @@
 Summary:	Jabber server with POSIX threads
-Summary(pl):	Serwer Jabbera u¿ywaj±cy w±tków posiksowych
+Summary(pl):	Serwer Jabbera u¿ywaj±cy w±tków POSIX-owych
 Name:		wpjabber
 Version:	1.1.5
 Release:	0.1
@@ -12,14 +12,19 @@ Source0:	wpjabber-1.1.5-20050514.tar.bz2
 #Patch0:		%{name}-perlscript.patch
 URL:		http://wpjabber.jabberstudio.org/
 BuildRequires:	openssl-devel >= 0.9.6d
+BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
-Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(post):	textutils
 Requires(post):	/usr/bin/perl
 Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
+Provides:	group(jabber)
+Provides:	user(jabber)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -62,13 +67,21 @@ perl -p -i -e 's#log/#/var/log/wpjabber/#'  $RPM_BUILD_ROOT/etc/%{name}/jabber.x
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ "$1" = "1" ] ; then
-	if [ ! -n "`getgid jabber`" ]; then
-		/usr/sbin/groupadd -f -g 74 jabber
+if [ -n "`getgid jabber`" ]; then
+	if [ "`getgid jabber`" != "74" ]; then
+		echo "Error: group jabber doesn't have gid=74. Correct this before installing bind." 1>&2
+		exit 1
 	fi
-	if [ ! -n "`id -u jabber 2>/dev/null`" ]; then
-		/usr/sbin/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
+else
+	/usr/sbin/groupadd -g 74 jabber
+fi
+if [ -n "`id -u jabber 2>/dev/null`" ]; then
+	if [ "`id -u jabber`" != "74" ]; then
+		echo "Error: user jabber doesn't have uid=74. Correct this before installing bind." 1>&2
+		exit 1
 	fi
+else
+	/usr/sbin/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
 fi
 
 %post
@@ -93,6 +106,12 @@ if [ "$1" = "0" ]; then
 		/etc/rc.d/init.d/jabberd stop >&2
 	fi
 	/sbin/chkconfig --del jabberd
+fi
+
+%postun
+if [ "$1" = "0" ]; then
+	%userremove jabber
+	%groupremove jabber
 fi
 
 %files
