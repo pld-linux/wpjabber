@@ -1,4 +1,5 @@
 Summary:	Jabber server with POSIX threads
+Summary(pl):	Serwer Jabbera u¿ywaj±cy w±tków posiksowych
 Name:		wpjabber
 Version:	1.1.5
 Release:	0.1
@@ -26,11 +27,15 @@ WPJabber is powerful instant messaging server based on XMPP/Jabber
 protocol. WPJabber was developed to handle large amount of concurrent
 users.
 
+%description -l pl
+WPJabber to potê¿ny serwer komunikacji oparty na protokole
+XMPP/Jabber. WPJabber zosta³ stworzony z my¶l± o obs³udze du¿ej liczby
+jednoczesnych u¿ytkowników.
+
 %prep
 %setup -q -n %{name}-%{version}
 
 %build
-
 export CC="%{__cc}"
 export CFLAGS="%{rpmcflags} "
 ./configure
@@ -42,12 +47,12 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_libdir}/%{name},/var/lib/%{name}/db,/var/run/jabber,/etc/{sysconfig,rc.d/init.d,%{name}}}
 
 install jabberd/jabberd $RPM_BUILD_ROOT%{_sbindir}/wpjabberd
-install */*.so $RPM_BUILD_ROOT%{_libdir}/%{name}/
+install */*.so $RPM_BUILD_ROOT%{_libdir}/%{name}
 install jabber.xml.example $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
 install wpj_epoll/wpj.xml.example $RPM_BUILD_ROOT/etc/%{name}/wpj.xml
-install wpj_epoll/wpj $RPM_BUILD_ROOT%{_sbindir}/
+install wpj_epoll/wpj $RPM_BUILD_ROOT%{_sbindir}
 
-perl -p -i -e 's#\./lib#/usr/lib/wpjabber#' $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
+perl -p -i -e 's#\./lib#%{_libdir}/wpjabber#' $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
 perl -p -i -e 's#log/#/var/log/wpjabber/#'  $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
 
 #install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
