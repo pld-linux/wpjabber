@@ -39,7 +39,7 @@ XMPP/Jabber. WPJabber zosta³ stworzony z my¶l± o obs³udze du¿ej liczby
 jednoczesnych u¿ytkowników.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 
 %build
 export CC="%{__cc}"
@@ -58,8 +58,8 @@ install jabber.xml.example $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
 install wpj_epoll/wpj.xml.example $RPM_BUILD_ROOT/etc/%{name}/wpj.xml
 install wpj_epoll/wpj $RPM_BUILD_ROOT%{_sbindir}
 
-perl -p -i -e 's#\./lib#%{_libdir}/wpjabber#' $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
-perl -p -i -e 's#log/#/var/log/wpjabber/#'  $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
+%{__perl} -p -i -e 's#\./lib#%{_libdir}/wpjabber#' $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
+%{__perl} -p -i -e 's#log/#/var/log/wpjabber/#'  $RPM_BUILD_ROOT/etc/%{name}/jabber.xml
 
 #install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 #install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
