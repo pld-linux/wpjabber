@@ -12,6 +12,7 @@ Source0:	wpjabber-1.1.5-20050514.tar.bz2
 #Patch0:		%{name}-perlscript.patch
 URL:		http://wpjabber.jabberstudio.org/
 BuildRequires:	openssl-devel >= 0.9.6d
+BuildRequires:	perl-base
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
 Requires(pre):	/bin/id
@@ -118,6 +119,7 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO doc/FAQ*
 #%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.cfg
+%dir %{_sysconfdir}/%{name}
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/*.xml
 #%dir %{_sysconfdir}/jabber/templates
 #%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/templates/*.xml
