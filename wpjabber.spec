@@ -14,6 +14,7 @@ URL:		http://wpjabber.jabberstudio.org/
 BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	perl-base
 BuildRequires:	rpm-perlprov >= 3.0.3-16
+BuildRequires:	rpmbuild(macros) >= 1.202
 PreReq:		rc-scripts
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
@@ -68,22 +69,8 @@ install wpj_epoll/wpj $RPM_BUILD_ROOT%{_sbindir}
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ -n "`getgid jabber`" ]; then
-	if [ "`getgid jabber`" != "74" ]; then
-		echo "Error: group jabber doesn't have gid=74. Correct this before installing bind." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/groupadd -g 74 jabber
-fi
-if [ -n "`id -u jabber 2>/dev/null`" ]; then
-	if [ "`id -u jabber`" != "74" ]; then
-		echo "Error: user jabber doesn't have uid=74. Correct this before installing bind." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
-fi
+%groupadd -g 74 jabber
+%useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber
 
 %post
 if [ -f /etc/jabber/secret ] ; then
