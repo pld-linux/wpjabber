@@ -6,7 +6,7 @@ Release:	0.1
 License:	GPL
 Group:		Applications/Communications
 #Source0:	http://www.jabberstudio.org/projects/%{name}/releases/file/%{name}-%{version}.tar.gz
-Source0:	wpjabber-1.1.5-20050514.tar.bz2
+Source0:	%{name}-%{version}-20050514.tar.bz2
 # Source0-md5:	f018020e84fc4bf7cc8e07b1a42a39c6
 #Source1:	%{name}.init
 #Patch0:		%{name}-perlscript.patch
@@ -15,16 +15,16 @@ BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	perl-base
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 BuildRequires:	rpmbuild(macros) >= 1.202
-PreReq:		rc-scripts
+Requires(post):	/usr/bin/perl
+Requires(post):	textutils
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(post):	textutils
-Requires(post):	/usr/bin/perl
-Requires(post,preun):	/sbin/chkconfig
-Requires(postun):	/usr/sbin/groupdel
-Requires(postun):	/usr/sbin/userdel
+Requires:	rc-scripts
 Provides:	group(jabber)
 Provides:	user(jabber)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -107,7 +107,7 @@ fi
 %doc AUTHORS ChangeLog README TODO doc/FAQ*
 #%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.cfg
 %dir %{_sysconfdir}/%{name}
-%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/*.xml
+%attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.xml
 #%dir %{_sysconfdir}/jabber/templates
 #%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/templates/*.xml
 %attr(755,root,root) %{_sbindir}/*
