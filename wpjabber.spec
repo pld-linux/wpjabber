@@ -15,8 +15,9 @@ BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	perl-base
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 BuildRequires:	rpmbuild(macros) >= 1.202
-Requires(post):	/usr/bin/perl
+BuildRequires:	%post-edits-too-many-files?
 Requires(post):	textutils
+Requires(post):	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
@@ -77,7 +78,8 @@ if [ -f /etc/jabber/secret ] ; then
 	SECRET=`cat /etc/jabber/secret`
 	if [ -n "$SECRET" ] ; then
 		echo "Updating component authentication secret in Jabberd config files..."
-		perl -pi -e "s/>secret</>$SECRET</" /etc/jabber/*.xml
+# XXX XXX FIXME Too greedy? should edit only files from this package
+		%{__sed} -i -e "s/>secret</>$SECRET</" /etc/jabber/*.xml
 	fi
 fi
 
