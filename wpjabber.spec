@@ -1,5 +1,5 @@
 Summary:	Jabber server with POSIX threads
-Summary(pl):	Serwer Jabbera u¿ywaj±cy w±tków POSIX-owych
+Summary(pl.UTF-8):   Serwer Jabbera uÅ¼ywajÄ…cy wÄ…tkÃ³w POSIX-owych
 Name:		wpjabber
 Version:	1.1.5
 Release:	0.1
@@ -35,10 +35,10 @@ WPJabber is powerful instant messaging server based on XMPP/Jabber
 protocol. WPJabber was developed to handle large amount of concurrent
 users.
 
-%description -l pl
-WPJabber to potê¿ny serwer komunikacji oparty na protokole
-XMPP/Jabber. WPJabber zosta³ stworzony z my¶l± o obs³udze du¿ej liczby
-jednoczesnych u¿ytkowników.
+%description -l pl.UTF-8
+WPJabber to potÄ™Å¼ny serwer komunikacji oparty na protokole
+XMPP/Jabber. WPJabber zostaÅ‚ stworzony z myÅ›lÄ… o obsÅ‚udze duÅ¼ej liczby
+jednoczesnych uÅ¼ytkownikÃ³w.
 
 %prep
 %setup -q
