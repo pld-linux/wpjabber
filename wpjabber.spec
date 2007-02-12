@@ -1,5 +1,5 @@
 Summary:	Jabber server with POSIX threads
-Summary(pl.UTF-8):   Serwer Jabbera używający wątków POSIX-owych
+Summary(pl.UTF-8):	Serwer Jabbera używający wątków POSIX-owych
 Name:		wpjabber
 Version:	1.1.5
 Release:	0.1
